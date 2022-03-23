@@ -8,7 +8,12 @@ import algorithms.ISPO;
 import algorithms.CMAES;
 import benchmarks.BaseFunctions.Alpine; 
 import benchmarks.BaseFunctions.Ackley;
-import benchmarks.BaseFunctions.Sphere;
+
+import benchmarks.BaseFunctions.Sphere; 
+import benchmarks.BaseFunctions.Schwefel;
+import benchmarks.BaseFunctions.Rastigin;
+import benchmarks.BaseFunctions.Michalewicz;
+
 import benchmarks.BaseFunctions.Rosenbrock;
 
 public class Test extends Experiment
@@ -35,6 +40,16 @@ public class Test extends Experiment
  	
 		p= new Sphere(probDim);
 		add(p);
+		
+		p= new Schwefel(probDim);
+		add(p);
+		
+		p= new Rastigin(probDim);
+		add(p);
+		
+		p= new Michalewicz(probDim);
+		add(p);
+		
 		
         //double[] bounds = {-100, 100};
 		//p = new Ackley(problemDimension, bounds);
