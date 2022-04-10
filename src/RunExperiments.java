@@ -32,8 +32,8 @@ public class RunExperiments
 
 	 
 		experiments.add(new Test(5));
-//		experiments.add(new Test(10));
-//		experiments.add(new Test(20));
+		experiments.add(new Test(10));
+		experiments.add(new Test(30));
 		
 //		experiments.add(new CEC14(10));
 //		experiments.add(new CEC14(50));

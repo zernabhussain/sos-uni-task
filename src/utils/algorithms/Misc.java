@@ -7,6 +7,8 @@ package utils.algorithms;
 import static utils.MatLab.max;
 import static utils.MatLab.min;
 
+import java.util.Arrays;
+
 /**
  * This class contains useful miscellaneous methods.
  */
@@ -41,25 +43,22 @@ public class Misc {
 		return xc;
 	}
 
-	/**
-	 * Rounds x to the nearest integer towards zero.
-	 */
-	public static int fix(double x) {
-		return (int) ((x >= 0) ? Math.floor(x) : Math.ceil(x));
+	public static double[][] getArrayCopy(double[][] array) {
+		return Arrays.copyOf(array, array.length);
 	}
 
-	/**
-	 * Return random number between given range (min , max).
-	 */
-	public static double getRandomNumber(double min, double max) {
-		return (double) ((Math.random() * (max - min)) + min);
+	public static double[] getArrayCopy(double[] array) {
+		return Arrays.copyOf(array, array.length);
 	}
 
-	public static double[] getRadius(double[][] bounds, int percent) {
+	public static double[] getRadius(double[][] bounds, float percent) {
 		int len = bounds.length;
+		float divVal = percent / 100;
 		double[] r = new double[len];
 		for (int i = 0; i < len; i++) {
-			r[i] = (bounds[i][1] - bounds[i][0]) * (40 / 100);
+			double upperBound = bounds[i][1];
+			double lowerBound = bounds[i][0];
+			r[i] = (upperBound - lowerBound) * divVal;
 		}
 		return r;
 	}
@@ -71,14 +70,30 @@ public class Misc {
 	 * @param n      problam dimension.
 	 * @return r randomly generated point.
 	 */
-	public static double[] getRadius(double[] bounds, int percent) {
+	public static double[] getRadius(double[] bounds, float percent) {
 		int len = bounds.length;
 		double[] r = new double[len];
 		for (int i = 0; i < len; i++) {
-			r[i] = (bounds[1] - bounds[0]) * (40 / 100);
+			r[i] = (bounds[1] - bounds[0]) * (percent / 100);
 		}
 		return r;
 
+	}
+
+	public static double[] divideArrayItemsBy(double[] array, int divideBy) {
+		int len = array.length;
+		double[] result = new double[len];
+		for (int i = 0; i < len; i++) {
+			result[i] = array[i] / divideBy;
+		}
+		return result;
+	}
+
+	/**
+	 * Return random number between given range (min , max).
+	 */
+	public static double getRandomNumber(double min, double max) {
+		return (double) ((Math.random() * (max - min)) + min);
 	}
 
 	/**
@@ -110,6 +125,14 @@ public class Misc {
 		}
 		return r;
 
+	}
+	
+
+	/**
+	 * Rounds x to the nearest integer towards zero.
+	 */
+	public static int fix(double x) {
+		return (int) ((x >= 0) ? Math.floor(x) : Math.ceil(x));
 	}
 
 	/**

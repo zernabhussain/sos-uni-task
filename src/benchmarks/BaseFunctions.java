@@ -224,8 +224,7 @@ public class BaseFunctions {
 				System.out.println("WARNING: the design variable does not match the dimensionality of the problem!");
 			} else {
 				for (int i = 0; i < n; i++) {
-					y += Math.pow(x[i], 2);
-//					y += Math.exp(x[i]);
+					y += Math.pow(x[i], 2); 
 				}
 
 			}

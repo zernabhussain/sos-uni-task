@@ -3,9 +3,7 @@ package algorithms;
 import interfaces.Algorithm;
 import interfaces.Problem;
 import utils.RunAndStore.FTrend;
-import static utils.algorithms.Misc.toro;
-import static utils.algorithms.Misc.generateRandomSolution; //WARNING:  this method is incomplete and will affect the search. You will have to complete in Task 2
-import static utils.algorithms.Misc.getRadius;
+import static utils.algorithms.Misc.*;
 
 public class SAlg extends Algorithm {
 	@Override
@@ -16,73 +14,70 @@ public class SAlg extends Algorithm {
 		double[][] bounds = problem.getBounds();
 
 		double[] elite = null;
-		double[] bestTemp = null;
-		double[] xShort = null;
+		double fElite;
 
-		if (initialSolution != null) {  
+		double[] temp = null;
+		double fTemp;
+
+		int i = 0;
+		if (initialSolution != null) {
 			elite = initialSolution;
-			bestTemp = initialSolution; 
-		} else // if not inserted, we need to randomly sample the initial guess
+			fElite = initialFitness;
+		} else  
 		{
-			elite = toro(generateRandomSolution(bounds, problemDimension), bounds);
-			bestTemp = elite;
-			xShort = elite;
+			elite = generateRandomSolution(bounds, problemDimension);
+			fElite = problem.f(elite);
+			i++;
+			FT.add(i, fElite);
 		}
 
-		// particle (the solution, i.e. "x")
-//		double[] elite = toro(generateRandomSolution(bounds, problemDimension), bounds);
-//
-//		double[] bestTemp = elite;
-//		double[] xShort = elite;
-
-//		FT.add(0, problem.f(initGuess));
-
-//		double[] radius = getRadius(bounds, 40);
-		double radius = 0.40;
-		int i = 0;
 		// main loop
 		while (i < maxEvaluations) {
-			for (int j = 0; j < problemDimension; j++) {
-				// init learning factor
 
-				xShort[j] = elite[j] - radius;
-				double[] toroCorr = toro(xShort, bounds);
-				double fitness = problem.f(toroCorr);
-				i++;
-				if (fitness <= problem.f(bestTemp)) {
-					bestTemp = toroCorr;
-					FT.add(i, fitness);
+			double[] radius = getRadius(bounds, 40);
+			temp = getArrayCopy(elite);
+			fTemp = fElite;
 
-				} else {
-					xShort[j] = elite[j] + (radius / 2);
-					toroCorr = toro(xShort, bounds);
-					fitness = problem.f(toroCorr);
+			for (int k = 0; k < 150 && i < maxEvaluations; k++) {
+
+				double[] xShort = getArrayCopy(temp);
+				for (int j = 0; j < problemDimension && i < maxEvaluations; j++) {
+					xShort[j] = temp[j] - radius[j];
+					double[] toroCorr = toro(xShort, bounds);
+					double fitness = problem.f(toroCorr);
 					i++;
-					if (fitness <= problem.f(bestTemp)) {
-						bestTemp = toroCorr;
+					if (fitness < fElite) {
+						fElite = fitness;
+						elite = getArrayCopy(xShort);
 						FT.add(i, fitness);
 
+					} else {
+						xShort = getArrayCopy(temp);
+						xShort[j] = temp[j] + ((double) radius[j] / (double) 2);
+						toroCorr = toro(xShort, bounds);
+						fitness = problem.f(toroCorr);
+						i++;
+						if (fitness < fElite) {
+							fElite = fitness;
+							elite = getArrayCopy(xShort);
+							FT.add(i, fitness);
+
+						}  
 					}
-//					xShort = bestTemp;
 
 				}
 
-			}
+				if (fElite < fTemp) {
+					fTemp = fElite;
+					temp = getArrayCopy(elite);
 
-			if (problem.f(bestTemp) <= problem.f(elite)) {
-				elite = bestTemp;
-			} else {
-				radius = radius / 2;
+				} else {
+					radius = divideArrayItemsBy(radius, 2);
+				}
 			}
-//			i++;
-
 		}
 		finalBest = elite;
-		double finalBest = problem.f(elite);
-		i++;
-////		// save the final best
-		FT.add(i, finalBest);
-//		i++;// add it to the txt file (row data)
+		FT.add(i, fElite);
 
 		return FT; // return the fitness trend
 	}
