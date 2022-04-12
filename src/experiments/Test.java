@@ -3,6 +3,8 @@ package experiments;
 import algorithms.ISPO;
 import algorithms.SAlg;
 import algorithms.CMAES;
+import algorithms.GA_SA_MEME; 
+import algorithms.GA_SA_EA_MEME;
 //import benchmarks.BaseFunctions.Ackley;
 //import benchmarks.BaseFunctions.Alpine;
 //import benchmarks.BaseFunctions.Michalewicz;
@@ -38,6 +40,14 @@ public class Test extends Experiment {
 		a = new SAlg();
 		add(a);
 
+		a = new GA_SA_MEME();
+		a.setID("GA & S Hybrid");
+		add(a);
+
+		a = new GA_SA_EA_MEME();
+		a.setID("GA_S_EA");
+		add(a);
+		
 		p = new Sphere(probDim);
 		add(p);
 
@@ -50,12 +60,12 @@ public class Test extends Experiment {
 		p = new Michalewicz(probDim);
 		add(p);
 
-		p = new Ackley(probDim);
-		add(p);
-		p = new Alpine(probDim);
-		add(p);
-		p = new Rosenbrock(probDim);
-		add(p);
+//		p = new Ackley(probDim);
+//		add(p);
+//		p = new Alpine(probDim);
+//		add(p);
+//		p = new Rosenbrock(probDim);
+//		add(p);
 
 	}
 }

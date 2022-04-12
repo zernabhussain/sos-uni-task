@@ -23,14 +23,14 @@ public class SAlg extends Algorithm {
 		if (initialSolution != null) {
 			elite = initialSolution;
 			fElite = initialFitness;
-		} else  
-		{
+		} else {
 			elite = generateRandomSolution(bounds, problemDimension);
 			fElite = problem.f(elite);
 			i++;
 			FT.add(i, fElite);
 		}
 
+		int internalBudget = 150;
 		// main loop
 		while (i < maxEvaluations) {
 
@@ -38,14 +38,16 @@ public class SAlg extends Algorithm {
 			temp = getArrayCopy(elite);
 			fTemp = fElite;
 
-			for (int k = 0; k < 150 && i < maxEvaluations; k++) {
-
+			for (int k = 0; k < internalBudget && i < maxEvaluations; k++) {
 				double[] xShort = getArrayCopy(temp);
+
 				for (int j = 0; j < problemDimension && i < maxEvaluations; j++) {
+
 					xShort[j] = temp[j] - radius[j];
 					double[] toroCorr = toro(xShort, bounds);
 					double fitness = problem.f(toroCorr);
 					i++;
+
 					if (fitness < fElite) {
 						fElite = fitness;
 						elite = getArrayCopy(xShort);
@@ -57,12 +59,13 @@ public class SAlg extends Algorithm {
 						toroCorr = toro(xShort, bounds);
 						fitness = problem.f(toroCorr);
 						i++;
+
 						if (fitness < fElite) {
 							fElite = fitness;
 							elite = getArrayCopy(xShort);
 							FT.add(i, fitness);
 
-						}  
+						}
 					}
 
 				}

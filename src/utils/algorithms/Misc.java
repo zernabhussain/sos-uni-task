@@ -2,12 +2,11 @@
  * MISCELLANEOUS
  *  @author Fabio Caraffini
 */
-package utils.algorithms;
-
+package utils.algorithms; 
 import static utils.MatLab.max;
-import static utils.MatLab.min;
-
-import java.util.Arrays;
+import static utils.MatLab.min; 
+import java.util.Arrays; 
+import utils.random.RandUtils;
 
 /**
  * This class contains useful miscellaneous methods.
@@ -126,7 +125,6 @@ public class Misc {
 		return r;
 
 	}
-	
 
 	/**
 	 * Rounds x to the nearest integer towards zero.
@@ -179,6 +177,22 @@ public class Misc {
 			}
 		}
 		return x_cor;
+	}
+
+	public static double[] crossOver(double[] x, double[] y) {
+		int n = x.length;
+		int index = RandUtils.randomInteger(n - 1);
+		double[] newX = getArrayCopy(x);
+
+		do {
+			if (index >= n) {
+				break;
+			}
+			newX[index] = y[index];
+			index++;
+		} while ((RandUtils.random() <= 1.00));
+
+		return newX;
 	}
 
 }
